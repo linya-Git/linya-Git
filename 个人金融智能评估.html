@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简易金融风险评估与理财推荐</title>
+    <style>
+        /* 基础样式，简化代码 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #34495e;
+            font-weight: 500;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+        }
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 4px;
+            display: none;
+        }
+        .risk-level {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .conservative { color: #27ae60; } /* 保守型 */
+        .stable { color: #3498db; }       /* 稳健型 */
+        .balanced { color: #f39c12; }    /* 平衡型 */
+        .aggressive { color: #e74c3c; }  /* 进取型 */
+        .recommendation {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+        }
+        .recommendation h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .recommendation p {
+            color: #34495e;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>个人金融智能评估</h1>
+        
+        <!-- 信息输入表单 -->
+        <form id="assessmentForm">
+            <div class="form-group">
+                <label for="age">年龄</label>
+                <input type="number" id="age" min="18" max="70" required placeholder="例如：22">
+            </div>
+            
+            <div class="form-group">
+                <label for="income">月收入（元）</label>
+                <select id="income" required>
+                    <option value="">请选择</option>
+                    <option value="3000">3000以下</option>
+                    <option value="5000">3000-5000</option>
+                    <option value="10000">5000-10000</option>
+                    <option value="20000">10000以上</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>风险偏好</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="risk1" name="risk" value="保守" required>
+                        <label for="risk1">保守</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="risk2" name="risk" value="稳健">
+                        <label for="risk2">稳健</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="risk3" name="risk" value="平衡">
+                        <label for="risk3">平衡</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="risk4" name="risk" value="进取">
+                        <label for="risk4">进取</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>理财目标</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input type="radio" id="goal1" name="goal" value="短期" required>
+                        <label for="goal1">短期（1年以内）</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="goal2" name="goal" value="长期">
+                        <label for="goal2">长期（3年以上）</label>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="button" id="calculateBtn">生成评估结果</button>
+        </form>
+        
+        <!-- 结果展示区域 -->
+        <div id="result">
+            <h2>您的评估结果</h2>
+            <div class="risk-level" id="riskResult">风险等级：稳健型</div>
+            <div class="recommendation">
+                <h3>推荐理财方案</h3>
+                <p id="recommendContent">
+                    1. 低风险（50%）：货币基金、定期存款，保证本金安全；<br>
+                    2. 中风险（30%）：债券基金，获取稳定收益；<br>
+                    3. 中高风险（20%）：混合型基金，兼顾收益与风险。
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 点击按钮生成结果
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            // 获取表单数据
+            const age = document.getElementById('age').value;
+            const income = document.getElementById('income').value;
+            const risk = document.querySelector('input[name="risk"]:checked').value;
+            const goal = document.querySelector('input[name="goal"]:checked').value;
+            
+            // 简单逻辑匹配风险等级和推荐（实际项目可替换为AI模型计算）
+            let riskLevel, riskClass, recommend;
+            if (risk === "保守" || income === "3000") {
+                riskLevel = "保守型";
+                riskClass = "conservative";
+                recommend = "1. 低风险（80%）：货币基金、活期存款，保证资金灵活；<br>2. 中风险（20%）：短期纯债基金，获取稳健收益。";
+            } else if (risk === "稳健" || (age > 25 && age < 40)) {
+                riskLevel = "稳健型";
+                riskClass = "stable";
+                recommend = "1. 低风险（50%）：货币基金、定期存款；<br>2. 中风险（30%）：债券基金；<br>3. 中高风险（20%）：混合型基金。";
+            } else if (risk === "平衡" && income === "10000") {
+                riskLevel = "平衡型";
+                riskClass = "balanced";
+                recommend = "1. 低风险（30%）：货币基金；<br>2. 中风险（40%）：债券基金、混合型基金；<br>3. 高风险（30%）：股票型基金。";
+            } else {
+                riskLevel = "进取型";
+                riskClass = "aggressive";
+                recommend = "1. 中风险（40%）：混合型基金；<br>2. 高风险（60%）：股票型基金、指数基金，追求长期高收益。";
+            }
+            
+            // 填充结果并显示
+            document.getElementById('riskResult').textContent = "风险等级：" + riskLevel;
+            document.getElementById('riskResult').className = "risk-level " + riskClass;
+            document.getElementById('recommendContent').innerHTML = recommend;
+            document.getElementById('result').style.display = "block";
+            
+            // 滚动到结果区域
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

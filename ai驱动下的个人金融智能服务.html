@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能金融助手 - 个人风险评估与理财推荐</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36CFC9',
+                        warning: '#FF7D00',
+                        danger: '#F53F3F',
+                        success: '#00B42A',
+                        neutral: '#86909C',
+                        light: '#F2F3F5',
+                        dark: '#1D2129'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .card-shadow {
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            }
+            .transition-custom {
+                transition: all 0.3s ease;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50 text-dark">
+    <!-- 导航栏 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-line-chart text-primary text-2xl"></i>
+                <h1 class="text-xl font-bold text-primary">智能金融助手</h1>
+            </div>
+            <nav class="hidden md:flex items-center space-x-6">
+                <a href="#assessment" class="text-neutral hover:text-primary transition-custom">风险评估</a>
+                <a href="#recommendation" class="text-neutral hover:text-primary transition-custom">理财推荐</a>
+                <a href="#about" class="text-neutral hover:text-primary transition-custom">关于系统</a>
+            </nav>
+            <button class="md:hidden text-neutral text-xl">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- 主横幅 -->
+    <section class="bg-gradient-to-r from-primary to-secondary text-white py-12 md:py-20">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-[clamp(1.8rem,4vw,3rem)] font-bold mb-4">AI驱动的个人金融智能服务</h2>
+            <p class="text-lg md:text-xl max-w-2xl mx-auto opacity-90">精准评估您的金融风险，定制专属理财方案，让每一分钱都发挥最大价值</p>
+            <button class="mt-8 bg-white text-primary font-medium px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition-custom transform hover:-translate-y-1">
+                开始评估 <i class="fa fa-arrow-right ml-2"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- 主要内容区 -->
+    <main class="container mx-auto px-4 py-12">
+        <!-- 风险评估表单 -->
+        <section id="assessment" class="mb-16">
+            <div class="text-center mb-10">
+                <h3 class="text-2xl md:text-3xl font-bold mb-3">个人金融风险评估</h3>
+                <p class="text-neutral max-w-2xl mx-auto">请填写以下信息，我们将通过AI算法评估您的金融风险承受能力</p>
+            </div>
+
+            <div class="bg-white rounded-xl card-shadow p-6 md:p-8 max-w-3xl mx-auto">
+                <form id="riskAssessmentForm" class="space-y-6">
+                    <!-- 基本信息 -->
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="age" class="block text-sm font-medium text-gray-700 mb-1">年龄</label>
+                            <input type="number" id="age" name="age" min="18" max="70" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-custom"
+                                placeholder="请输入您的年龄">
+                        </div>
+                        <div>
+                            <label for="income" class="block text-sm font-medium text-gray-700 mb-1">月收入(元)</label>
+                            <select id="income" name="income" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-custom">
+                                <option value="">请选择收入范围</option>
+                                <option value="3000以下">3000元以下</option>
+                                <option value="3000-5000">3000-5000元</option>
+                                <option value="5000-10000">5000-10000元</option>
+                                <option value="10000-20000">10000-20000元</option>
+                                <option value="20000以上">20000元以上</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 资产与负债 -->
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="savings" class="block text-sm font-medium text-gray-700 mb-1">储蓄金额(元)</label>
+                            <select id="savings" name="savings" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-custom">
+                                <option value="">请选择储蓄范围</option>
+                                <option value="5万以下">5万元以下</option>
+                                <option value="5万-10万">5万-10万元</option>
+                                <option value="10万-50万">10万-50万元</option>
+                                <option value="50万-100万">50万-100万元</option>
+                                <option value="100万以上">100万元以上</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="debt" class="block text-sm font-medium text-gray-700 mb-1">负债情况</label>
+                            <select id="debt" name="debt" 
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-custom">
+                                <option value="">请选择负债情况</option>
+                                <option value="无负债">无负债</option>
+                                <option value="少量负债">少量负债(月还款≤收入1/4)</option>
+                                <option value="中等负债">中等负债(月还款1/4-1/2)</option>
+                                <option value="高负债">高负债(月还款>收入1/2)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 投资经验 -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">投资经验</label>
+                        <div class="space-y-2">
+                            <div class="flex items-center">
+                                <input type="radio" id="exp0" name="experience" value="无经验" 
+                                    class="w-4 h-4 text-primary focus:ring-primary border-gray-300">
+                                <label for="exp0" class="ml-2 text-gray-700">无任何投资经验</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="exp1" name="experience" value="初级" 
+                                    class="w-4 h-4 text-primary focus:ring-primary border-gray-300">
+                                <label for="exp1" class="ml-2 text-gray-700">初级(1年以内，主要投资低风险产品)</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="exp2" name="experience" value="中级" 
+                                    class="w-4 h-4 text-primary focus:ring-primary border-gray-300">
+                                <label for="exp2" class="ml-2 text-gray-700">中级(1-3年，接触过混合类产品)</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="exp3" name="experience" value="高级" 
+                                    class="w-4 h-4 text-primary focus:ring-primary border-gray-300">
+                                <label for="exp3" class="ml-2 text-gray-700">高级(3年以上，熟悉各类投资产品)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 风险偏好 -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">风险偏好</label>
+                        <div class="space-y-2">
+                            <div class="flex items-center">
+                                <input type="radio" id="risk0" name="riskPreference" value="保守" 
+                                    class="w-4 h-4 text-primary focus:ring-primary border-gray-300">
+                                <label for="risk0" class="ml-2 text-gray-700">保守型(希望本金安全，接受低收益)</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="risk1" name="riskPreference" value="稳健" 
+                                    class="w-4 h-4 text-primary focus:ring-primary border-gray-300">
+                                <label for="risk1" class="ml-2 text-gray-700">稳健型(平衡风险与收益，可接受小幅波动)</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="risk2" name="riskPreference" value="平衡" 
+                                    class="w-4 h-4 text-primary focus:ring-primary border-gray-300">
+                                <label for="risk2" class="ml-2 text-gray-700">平衡型(可接受中等风险以获取中等收益)</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="risk3" name="riskPreference" value="进取" 
+                                    class="w-4 h-4 text-primary focus:ring-primary border-gray-300">
+                                <label for="risk3" class="ml-2 text-gray-700">进取型(追求高收益，可接受较大波动)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 理财目标 -->
+                    <div>
+                        <label for="goal" class="block text-sm font-medium text-gray-700 mb-1">主要理财目标</label>
+                        <select id="goal" name="goal" 
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-custom">
+                            <option value="">请选择您的主要目标</option>
+                            <option value="短期增值">短期资金增值(1年内)</option>
+                            <option value="中期规划">中期生活规划(1-3年)</option>
+                            <option value="长期储蓄">长期储蓄增值(3-5年)</option>
+                            <option value="退休准备">退休养老准备(10年以上)</option>
+                            <option value="资产配置">多元化资产配置</option>
+                        </select>
+                    </div>
+
+                    <div class="text-center pt-4">
+                        <button type="button" id="calculateBtn" 
+                            class="bg-primary hover:bg-primary/90 text-white font-medium px-8 py-3 rounded-lg shadow-md hover:shadow-lg transition-custom transform hover:-translate-y-0.5">
+                            <i class="fa fa-calculator mr-2"></i>计算风险评估结果
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- 评估结果 -->
+        <section id="result" class="mb-16 hidden">
+            <div class="text-center mb-10">
+                <h3 class="text-2xl md:text-3xl font-bold mb-3">您的风险评估结果</h3>
+                <p class="text-neutral max-w-2xl mx-auto">基于您提供的信息，我们的AI系统已完成风险评估</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- 风险等级 -->
+                <div class="bg-white rounded-xl card-shadow p-6 md:p-8">
+                    <h4 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="fa fa-shield text-primary mr-2"></i> 风险承受能力
+                    </h4>
+                    
+                    <div class="mb-6 text-center">
+                        <div class="inline-block px-6 py-3 rounded-full bg-blue-50 text-primary font-bold text-xl mb-2">
+                            稳健型
+                        </div>
+                        <p class="text-neutral">您可以承受中等偏低风险，追求稳健收益</p>
+                    </div>
+                    
+                    <!-- 风险雷达图 -->
+                    <div class="h-64">
+                        <canvas id="riskRadarChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 评估分析 -->
+                <div class="bg-white rounded-xl card-shadow p-6 md:p-8">
+                    <h4 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="fa fa-bar-chart text-primary mr-2"></i> 评估分析
+                    </h4>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <h5 class="font-medium text-gray-800">收入稳定性</h5>
+                            <div class="mt-1 w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-success h-2.5 rounded-full" style="width: 75%"></div>
+                            </div>
+                            <p class="text-sm text-neutral mt-1">您的收入水平处于中等偏上，具有一定稳定性</p>
+                        </div>
+                        
+                        <div>
+                            <h5 class="font-medium text-gray-800">债务压力</h5>
+                            <div class="mt-1 w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-success h-2.5 rounded-full" style="width: 20%"></div>
+                            </div>
+                            <p class="text-sm text-neutral mt-1">债务压力较小，有较多可支配资金用于投资</p>
+                        </div>
+                        
+                        <div>
+                            <h5 class="font-medium text-gray-800">投资经验</h5>
+                            <div class="mt-1 w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-warning h-2.5 rounded-full" style="width: 45%"></div>
+                            </div>
+                            <p class="text-sm text-neutral mt-1">具备一定投资经验，可尝试多元化投资组合</p>
+                        </div>
+                        
+                        <div>
+                            <h5 class="font-medium text-gray-800">流动性需求</h5>
+                            <div class="mt-1 w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-primary h-2.5 rounded-full" style="width: 60%"></div>
+                            </div>
+                            <p class="text-sm text-neutral mt-1">有一定流动性需求，建议保持部分资金灵活性</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 理财推荐 -->
+        <section id="recommendation" class="mb-16 hidden">
+            <div class="text-center mb-10">
+                <h3 class="text-2xl md:text-3xl font-bold mb-3">为您定制的理财方案</h3>
+                <p class="text-neutral max-w-2xl mx-auto">基于您的风险评估结果和理财目标，AI系统为您推荐以下方案</p>
+            </div>
+
+            <div class="max-w-5xl mx-auto">
+                <!-- 资产配置建议 -->
+                <div class="bg-white rounded-xl card-shadow p-6 md:p-8 mb-8">
+                    <h4 class="text-xl font-semibold mb-6 flex items-center">
+                        <i class="fa fa-pie-chart text-primary mr-2"></i> 建议资产配置比例
+                    </h4>
+                    
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div class="h-64">
+                            <canvas id="assetAllocationChart"></canvas>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <span class="w-3 h-3 rounded-full bg-blue-500 mr-2"></span>
+                                <span class="text-gray-700">低风险产品: 40%</span>
+                                <span class="ml-auto text-sm text-neutral">(货币基金、定期存款)</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="w-3 h-3 rounded-full bg-green-500 mr-2"></span>
+                                <span class="text-gray-700">中低风险产品: 30%</span>
+                                <span class="ml-auto text-sm text-neutral">(债券基金、稳健理财)</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="w-3 h-3 rounded-full bg-yellow-500 mr-2"></span>
+                                <span class="text-gray-700">中风险产品: 20%</span>
+                                <span class="ml-auto text-sm text-neutral">(混合型基金)</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="w-3 h-3 rounded-full bg-orange-500 mr-2"></span>
+                                <span class="text-gray-700">中高风险产品: 10%</span>
+                                <span class="ml-auto text-sm text-neutral">(股票型基金)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 推荐产品 -->
+                <div>
+                    <h4 class="text-xl font-semibold mb-6 flex items-center">
+                        <i class="fa fa-th-list text-primary mr-2"></i> 推荐理财产品
+                    </h4>
+                    
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <!-- 产品1 -->
+                        <div class="bg-white rounded-xl card-shadow overflow-hidden transition-custom hover:shadow-lg">
+                            <div class="p-1 bg-blue-500"></div>
+                            <div class="p-5">
+                                <div class="flex justify-between items-start mb-3">
+                                    <h5 class="font-semibold text-lg">安盈货币基金</h5>
+                                    <span class="px-2 py-1 bg-blue-50 text-blue-600 text-xs rounded">低风险</span>
+                                </div>
+                                <div class="mb-3">
+                                    <span class="text-2xl font-bold text-gray-800">2.85</span>
+                                    <span class="text-gray-500">% 七日年化</span>
+                                </div>
+                                <p class="text-sm text-neutral mb-4">流动性高，随存随取，适合存放备用金</p>
+                                <button class="w-full py-2 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-custom">
+                                    查看详情
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 产品2 -->
+                        <div class="bg-white rounded-xl card-shadow overflow-hidden transition-custom hover:shadow-lg">
+                            <div class="p-1 bg-green-500"></div>
+                            <div class="p-5">
+                                <div class="flex justify-between items-start mb-3">
+                                    <h5 class="font-semibold text-lg">稳健债券精选</h5>
+                                    <span class="px-2 py-1 bg-green-50 text-green-600 text-xs rounded">中低风险</span>
+                                </div>
+                                <div class="mb-3">
+                                    <span class="text-2xl font-bold text-gray-800">4.50</span>
+                                    <span class="text-gray-500">% 近一年收益</span>
+                                </div>
+                                <p class="text-sm text-neutral mb-4">主要投资债券市场，波动小，收益稳定</p>
+                                <button class="w-full py-2 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-custom">
+                                    查看详情
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 产品3 -->
+                        <div class="bg-white rounded-xl card-shadow overflow-hidden transition-custom hover:shadow-lg">
+                            <div class="p-1 bg-yellow-500"></div>
+                            <div class="p-5">
+                                <div class="flex justify-between items-start mb-3">
+                                    <h5 class="font-semibold text-lg">均衡配置混合基金</h5>
+                                    <span class="px-2 py-1 bg-yellow-50 text-yellow-600 text-xs rounded">中风险</span>
+                                </div>
+                                <div class="mb-3">
+                                    <span class="text-2xl font-bold text-gray-800">7.20</span>
+                                    <span class="text-gray-500">% 近一年收益</span>
+                                </div>
+                                <p class="text-sm text-neutral mb-4">股债平衡配置，兼顾收益与风险控制</p>
+                                <button class="w-full py-2 border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition-custom">
+                                    查看详情
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 关于系统 -->
+        <section id="about" class="bg-white rounded-xl card-shadow p-6 md:p-8 max-w-5xl mx-auto">
+            <div class="text-center mb-8">
+                <h3 class="text-2xl md:text-3xl font-bold mb-3">关于智能金融助手</h3>
+                <p class="text-neutral max-w-2xl mx-auto">我们的AI系统如何为您提供专业的金融服务</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fa fa-cogs text-primary text-2xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-lg mb-2">智能评估算法</h4>
+                    <p class="text-neutral text-sm">基于机器学习模型，综合分析多维度数据，精准评估您的风险承受能力</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fa fa-lightbulb-o text-primary text-2xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-lg mb-2">个性化推荐</h4>
+                    <p class="text-neutral text-sm">结合您的风险偏好、理财目标和市场动态，提供专属的资产配置方案</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fa fa-shield text-primary text-2xl"></i>
+                    </div>
+                    <h4 class="font-semibold text-lg mb-2">安全可靠</h4>
+                    <p class="text-neutral text-sm">严格保护您的个人信息，所有推荐仅作参考，助您做出明智的金融决策</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-10 mt-16">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fa fa-line-chart text-primary text-2xl"></i>
+                        <h2 class="text-xl font-bold">智能金融助手</h2>
+                    </div>
+                    <p class="text-gray-400 text-sm">AI驱动的个人金融服务平台，为您提供专业的风险评估和理财推荐</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">快速链接</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#assessment" class="hover:text-primary transition-custom">风险评估</a></li>
+                        <li><a href="#recommendation" class="hover:text-primary transition-custom">理财推荐</a></li>
+                        <li><a href="#about" class="hover:text-primary transition-custom">关于系统</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold mb-4">免责声明</h4>
+                    <p class="text-gray-400 text-sm">本系统提供的所有信息和推荐仅作参考，不构成任何投资建议。投资有风险，理财需谨慎。</p>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-6 text-center text-gray-500 text-sm">
+                &copy; 2023 智能金融助手 - 人工智能金融应用原型
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 计算按钮点击事件
+            document.getElementById('calculateBtn').addEventListener('click', function() {
+                // 简单验证表单
+                if (!validateForm()) {
+                    alert('请完整填写所有信息');
+                    return;
+                }
+                
+                // 显示结果和推荐部分
+                document.getElementById('result').classList.remove('hidden');
+                document.getElementById('recommendation').classList.remove('hidden');
+                
+                // 平滑滚动到结果部分
+                document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+                
+                // 初始化图表
+                initRiskRadarChart();
+                initAssetAllocationChart();
+            });
+        });
+        
+        // 表单验证
+        function validateForm() {
+            const age = document.getElementById('age').value;
+            const income = document.getElementById('income').value;
+            const savings = document.getElementById('savings').value;
+            const debt = document.getElementById('debt').value;
+            const experience = document.querySelector('input[name="experience"]:checked');
+            const riskPreference = document.querySelector('input[name="riskPreference"]:checked');
+            const goal = document.getElementById('goal').value;
+            
+            return age && income && savings && debt && experience && riskPreference && goal;
+        }
+        
+        // 初始化风险雷达图
+        function initRiskRadarChart() {
+            const ctx = document.getElementById('riskRadarChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['收入稳定性', '债务压力', '投资经验', '风险偏好', '流动性需求'],
+                    datasets: [{
+                        label: '您的情况',
+                        data: [75, 20, 45, 60, 50],
+                        backgroundColor: 'rgba(22, 93, 255, 0.2)',
+                        borderColor: 'rgba(22, 93, 255, 1)',
+                        pointBackgroundColor: 'rgba(22, 93, 255, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(22, 93, 255, 1)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 初始化资产配置图表
+        function initAssetAllocationChart() {
+            const ctx = document.getElementById('assetAllocationChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['低风险产品', '中低风险产品', '中风险产品', '中高风险产品'],
+                    datasets: [{
+                        data: [40, 30, 20, 10],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(75, 192, 192, 0.7)',
+                            'rgba(255, 206, 86, 0.7)',
+                            'rgba(255, 159, 64, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+        }
+    </script>
+</body>
+</html>
